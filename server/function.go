@@ -2,14 +2,25 @@ package server
 
 import (
 	"encoding/json"
+	"io"
+	"log"
 	"net/http"
+	"tweet-analyser/server/gpt"
+	"tweet-analyser/server/scraper"
 )
 
 func api(w http.ResponseWriter, r *http.Request) {
+	url, err := io.ReadAll(r.Body)
+	if err != nil {
+		panic(err)
+	}
+	log.Println("URL: ", string(url))
+	gptData := scraper.New(string(url))
+  message := gpt.New(gptData)
 	data := struct {
 		Message string `json:"message"`
 	}{
-		Message: "Hello, World!",
+		Message: message,
 	}
 
 	w.Header().Set("Content-Type", "application/json")

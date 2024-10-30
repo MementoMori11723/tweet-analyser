@@ -6,7 +6,7 @@ import (
 
 var (
   routes = map[string]func (http.ResponseWriter, *http.Request) {
-    "/": api,
+    "POST /": api,
   }
 )
 

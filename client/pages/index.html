@@ -1,29 +1,111 @@
+
 <!doctype html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8" />
-  <title>Tweet Analisys</title>
+  <title>Tweet Analysis</title>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"
     integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 100px auto;
+      background-color: #fff;
+      padding: 40px 30px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #1DA1F2;
+      margin-bottom: 40px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 16px;
+      color: #333;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 15px;
+      font-size: 16px;
+      border: 1px solid #ccd6dd;
+      border-radius: 5px;
+      box-sizing: border-box;
+      margin-bottom: 20px;
+      transition: border-color 0.3s;
+    }
+
+    input[type="text"]:focus {
+      border-color: #1DA1F2;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      background-color: #1DA1F2;
+      color: #fff;
+      padding: 15px;
+      font-size: 18px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #1991DA;
+    }
+
+    p {
+      text-align: justify;
+      font-size: 18px;
+      color: #333;
+      margin-top: 30px;
+    }
+  </style>
   <script>
-    $(document).ready(function () {
+    function Fetch() {
+      let tweetUrl = $('#tweet-url').val();
+      console.log(tweetUrl);
+      document.getElementsByTagName('p')[0].innerText = "Loading...";
       $.ajax({
         url: '/api',
-        type: 'GET',
+        type: 'POST',
+        data: tweetUrl,
         success: function (response) {
           console.log(response);
+          document.getElementsByTagName('p')[0].innerText = response.message;
         },
         error: function (error) {
-          console.log(error);
+          alert(error);
         }
       });
-    });
+    }
   </script>
 </head>
 
 <body>
-  <h1>Hello, world!</h1>
+  <div class="container">
+    <h1>Twitter Sentiment Analysis</h1>
+    <label for="tweet-url">Enter Tweet URL:</label>
+    <input type="text" id="tweet-url" placeholder="https://twitter.com/username/status/1234567890" />
+    <button onclick="Fetch()">Submit</button>
+    <p></p>
+  </div>
 </body>
 
 </html>
+
