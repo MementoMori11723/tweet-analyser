@@ -9,15 +9,12 @@ import (
 )
 
 func main() {
-	go func() {
-		client := client.New()
-		server := server.New()
-		PORT := config.GetPort()
+  client := client.New()
+  server := server.New()
+  PORT := config.GetPort()
 
-		http.Handle("/", client)
-		http.Handle("/api", server)
-    fmt.Println("Server is running on http://localhost:"+PORT)
-    http.ListenAndServe(":"+PORT, nil)
-	}()
-	fmt.Scanln()
+  http.Handle("/", client)
+  http.Handle("/api", server)
+  fmt.Println("Server is running on http://localhost:"+PORT)
+  http.ListenAndServe(":"+PORT, nil)
 }

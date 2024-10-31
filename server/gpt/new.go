@@ -29,6 +29,7 @@ type Responce struct {
 }
 
 func New(data string) string {
+	log.Println("GPT New called")
 	api, url := config.GetGptData()
 	request := Request{
 		Model: "gpt-4",
@@ -44,15 +45,24 @@ func New(data string) string {
 		},
 	}
 
+	log.Println("Request: ", request)
+	log.Println("creating json")
+
 	jsonReq, err := json.Marshal(request)
 	if err != nil {
 		log.Println("json error: ", err)
 		log.Fatal(err)
 	}
 
+	log.Println("created json")
+	log.Println("creating client")
+
 	client := &http.Client{
 		Timeout: time.Second * 10,
 	}
+
+	log.Println("created client")
+	log.Println("creating request")
 
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonReq))
 	if err != nil {
@@ -62,11 +72,16 @@ func New(data string) string {
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", "Bearer "+api)
 
+	log.Println("created request")
+	log.Println("sending request")
 	res, err := client.Do(req)
 	if err != nil {
 		log.Println("response error: ", err)
 		log.Fatal(err)
 	}
+
+	log.Println("sent request")
+	log.Println("reading response")
 
 	defer res.Body.Close()
 	body, err := io.ReadAll(res.Body)
@@ -75,6 +90,9 @@ func New(data string) string {
 		log.Fatal(err)
 	}
 
+	log.Println("read response")
+	log.Println("unmarshalling response")
+
 	var responce Responce
 	err = json.Unmarshal(body, &responce)
 	if err != nil {
@@ -82,5 +100,7 @@ func New(data string) string {
 		log.Fatal(err)
 	}
 
+	log.Println("unmarshalled response")
+	log.Println("returning response")
 	return responce.Choices[0].Message.Content
 }

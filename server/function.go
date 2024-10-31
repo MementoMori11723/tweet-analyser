@@ -10,13 +10,17 @@ import (
 )
 
 func api(w http.ResponseWriter, r *http.Request) {
+  log.Println("API called")
 	url, err := io.ReadAll(r.Body)
 	if err != nil {
 		panic(err)
 	}
 	log.Println("URL: ", string(url))
 	gptData := scraper.New(string(url))
+  log.Println("GPT Data: ", gptData)
+  log.Println("sending to GPT")
   message := gpt.New(gptData)
+  log.Println("GPT Response: ", message)
 	data := struct {
 		Message string `json:"message"`
 	}{

@@ -14,6 +14,20 @@ Once we've collected the tweets, we use advanced AI language processing provided
 - **Determine the Overall Tone**: Assess whether the tweets convey positive, negative, or neutral feelings, helping you gauge the user's sentiment.
 - **Analyze Word Frequency**: Identify the most commonly used words to highlight key interests or topics the user frequently mentions.
 
+## Dockerized Deployment
+
+We have containerized the Tweet Analyzer application using Docker to streamline deployment and ensure consistent environments across systems. With Docker, all necessary dependencies are encapsulated in a portable image, allowing for simplified setup and isolated execution.
+
+### Running the Application
+
+To run the application, simply execute the `Makefile` command:
+
+```sh
+make
+```
+
+This command builds the Docker image, sets up the environment, and runs the application in a Docker container. The `Makefile` handles all setup steps, so you don’t need to worry about manual configuration or dependency installation.
+
 ## Features
 
 - **Easy-to-Use Interface**: Navigate through a simple and intuitive design that requires no technical expertise, making it accessible to everyone.
