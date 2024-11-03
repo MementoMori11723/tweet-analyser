@@ -4,77 +4,30 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"os/exec"
-	"runtime"
 	"time"
 
 	"github.com/chromedp/chromedp"
 )
 
-func init() {
-	if !isChromeInstalled() {
-		installChrome()
-	} else {
-		log.Println("Chrome is already installed.")
-	}
-}
-
-func isChromeInstalled() bool {
-	var checkCmd *exec.Cmd
-	switch runtime.GOOS {
-	case "windows":
-		checkCmd = exec.Command("where", "chrome")
-	case "darwin":
-		checkCmd = exec.Command("which", "google-chrome")
-	default:
-		checkCmd = exec.Command("which", "google-chrome")
-	}
-	if err := checkCmd.Run(); err != nil {
-		return false
-	}
-	return true
-}
-
-
-func installChrome() {
-	switch runtime.GOOS {
-	case "linux":
-		fmt.Println("Installing Chrome on Linux without sudo...")
-		// Download Chrome directly
-		err := exec.Command("wget", "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb", "-O", "google-chrome.deb").Run()
-		if err != nil {
-			log.Fatal("Failed to download Chrome:", err)
-		}
-
-		// Install Chrome using dpkg
-		err = exec.Command("dpkg", "-x", "google-chrome.deb", ".").Run()
-		if err != nil {
-			log.Fatal("Failed to extract Chrome package:", err)
-		}
-
-		// Move Chrome binary to an accessible path
-		err = exec.Command("mv", "./opt/google/chrome/chrome", "/usr/bin/google-chrome").Run()
-		if err != nil {
-			log.Fatal("Failed to move Chrome to /usr/bin:", err)
-		}
-
-		fmt.Println("Chrome installation complete.")
-
-	default:
-		fmt.Println("Unsupported OS or requires manual installation.")
-	}
-}
-
-
 // New creates a new scraping context and extracts data from the given URL
 func New(url string) string {
-	var data string
-	var by string
+	var data, by string
 
 	dataXpath := "/html/body/div[1]/div/div/div[2]/main/div/div/div/div[1]/div/section/div/div/div[1]/div/div/article/div/div/div[3]/div[1]"
 	byXpath := "/html/body/div[1]/div/div/div[2]/main/div/div/div/div[1]/div/section/div/div/div[1]/div/div/article/div/div/div[2]/div[2]/div/div/div[1]/div/div/div[1]/div/a/div/div[1]/span/span"
 
-	ctx, cancel := chromedp.NewContext(context.Background())
+	// Create a chromedp context with headless flags
+	opts := append(chromedp.DefaultExecAllocatorOptions[:],
+		chromedp.Flag("headless", true),              // Run in headless mode
+		chromedp.Flag("no-sandbox", true),            // Needed for running as root in Docker
+		chromedp.Flag("disable-gpu", true),           // Disable GPU acceleration
+		chromedp.Flag("disable-dev-shm-usage", true), // Use /tmp instead of /dev/shm
+	)
+	ctx, cancel := chromedp.NewExecAllocator(context.Background(), opts...)
+	defer cancel()
+
+	// Create the chromedp context
+	ctx, cancel = chromedp.NewContext(ctx)
 	defer cancel()
 
 	log.Println("Scraping:", url)
@@ -84,7 +37,7 @@ func New(url string) string {
 	err := chromedp.Run(
 		ctx,
 		chromedp.Navigate(url),
-		chromedp.Sleep(time.Second*2),
+		chromedp.Sleep(2*time.Second),
 		chromedp.Text(dataXpath, &data, chromedp.BySearch),
 		chromedp.Text(byXpath, &by, chromedp.BySearch),
 	)
@@ -93,5 +46,5 @@ func New(url string) string {
 	}
 
 	log.Println("Scraping successful.")
-	return data + " by " + by
+	return fmt.Sprintf("%s by %s", data, by)
 }
