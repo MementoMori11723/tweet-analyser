@@ -17,10 +17,9 @@ func api(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Println("URL: ", string(url))
 	gptData := scraper.New(string(url))
-  log.Println("GPT Data: ", gptData)
   log.Println("sending to GPT")
   message := gpt.New(gptData)
-  log.Println("GPT Response: ", message)
+  log.Println("recived response from GPT")
 	data := struct {
 		Message string `json:"message"`
 	}{

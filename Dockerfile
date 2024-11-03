@@ -10,5 +10,9 @@ COPY go.mod ./
 RUN go mod download
 COPY . .
 RUN go build -o main .
-EXPOSE 5000
+ARG API_KEY
+ENV API_KEY=$API_KEY
+ARG PORT
+ENV PORT=$PORT
+EXPOSE $PORT
 CMD ["./main"]

@@ -45,7 +45,7 @@ func New(data string) string {
 		},
 	}
 
-	log.Println("Request: ", request)
+	log.Println("Request created")
 	log.Println("creating json")
 
 	jsonReq, err := json.Marshal(request)
