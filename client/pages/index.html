@@ -1,111 +1,183 @@
-
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Tweet Analysis</title>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      /* Reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-<head>
-  <meta charset="UTF-8" />
-  <title>Tweet Analysis</title>
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f0f2f5;
-      margin: 0;
-      padding: 0;
-    }
+      /* Body styling */
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #1da1f2 0%, #004080 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+        color: #fff;
+      }
 
-    .container {
-      max-width: 500px;
-      margin: 100px auto;
-      background-color: #fff;
-      padding: 40px 30px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-      border-radius: 10px;
-    }
+      /* Container styling */
+      .container {
+        width: 90%;
+        max-width: 400px;
+        padding: 40px;
+        background-color: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        border-radius: 12px;
+        transition: transform 0.3s ease;
+        text-align: center;
+      }
 
-    h1 {
-      text-align: center;
-      color: #1DA1F2;
-      margin-bottom: 40px;
-    }
+      /* Container hover effect */
+      .container:hover {
+        transform: translateY(-5px);
+      }
 
-    label {
-      display: block;
-      margin-bottom: 10px;
-      font-size: 16px;
-      color: #333;
-    }
+      /* Header styling */
+      h1 {
+        color: #1da1f2;
+        font-size: 26px;
+        margin-bottom: 20px;
+        font-weight: 600;
+      }
 
-    input[type="text"] {
-      width: 100%;
-      padding: 12px 15px;
-      font-size: 16px;
-      border: 1px solid #ccd6dd;
-      border-radius: 5px;
-      box-sizing: border-box;
-      margin-bottom: 20px;
-      transition: border-color 0.3s;
-    }
+      /* Label styling */
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 14px;
+        color: #333;
+        text-align: left;
+      }
 
-    input[type="text"]:focus {
-      border-color: #1DA1F2;
-      outline: none;
-    }
+      /* Input field styling */
+      input[type="text"] {
+        width: 100%;
+        padding: 14px 18px;
+        font-size: 15px;
+        border: 1px solid #ccd6dd;
+        border-radius: 6px;
+        transition:
+          border-color 0.3s,
+          box-shadow 0.3s;
+        outline: none;
+        margin-bottom: 18px;
+      }
 
-    button {
-      width: 100%;
-      background-color: #1DA1F2;
-      color: #fff;
-      padding: 15px;
-      font-size: 18px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
+      /* Input focus effect */
+      input[type="text"]:focus {
+        border-color: #1da1f2;
+        box-shadow: 0 0 8px rgba(29, 161, 242, 0.2);
+      }
 
-    button:hover {
-      background-color: #1991DA;
-    }
+      /* Button styling */
+      button {
+        width: 100%;
+        padding: 14px;
+        font-size: 17px;
+        font-weight: 600;
+        color: #fff;
+        background: linear-gradient(135deg, #1da1f2, #1991da);
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition:
+          background-color 0.3s ease,
+          transform 0.2s;
+      }
 
-    p {
-      text-align: justify;
-      font-size: 18px;
-      color: #333;
-      margin-top: 30px;
-    }
-  </style>
-  <script>
-    function Fetch() {
-      let tweetUrl = $('#tweet-url').val();
-      console.log(tweetUrl);
-      document.getElementsByTagName('p')[0].innerText = "Loading...";
-      $.ajax({
-        url: '/api',
-        type: 'POST',
-        data: tweetUrl,
-        success: function (response) {
-          console.log(response);
-          document.getElementsByTagName('p')[0].innerText = response.message;
-        },
-        error: function (error) {
-          alert(error);
+      /* Button hover effect */
+      button:hover {
+        background: linear-gradient(135deg, #1991da, #1da1f2);
+        transform: translateY(-1px);
+      }
+
+      /* Button active effect */
+      button:active {
+        transform: translateY(2px);
+      }
+
+      /* Paragraph styling */
+      p {
+        font-size: 16px;
+        color: #444;
+        line-height: 1.6;
+        margin-top: 25px;
+        text-align: justify;
+        word-wrap: break-word;
+        min-height: 30px;
+      }
+
+      /* Responsive styling */
+      @media (max-width: 600px) {
+        .container {
+          padding: 30px 20px;
         }
-      });
-    }
-  </script>
-</head>
 
-<body>
-  <div class="container">
-    <h1>Twitter Sentiment Analysis</h1>
-    <label for="tweet-url">Enter Tweet URL:</label>
-    <input type="text" id="tweet-url" placeholder="https://twitter.com/username/status/1234567890" />
-    <button onclick="Fetch()">Submit</button>
-    <p></p>
-  </div>
-</body>
+        h1 {
+          font-size: 22px;
+        }
 
+        input[type="text"] {
+          font-size: 14px;
+          padding: 12px 15px;
+        }
+
+        button {
+          font-size: 16px;
+          padding: 12px;
+        }
+
+        p {
+          font-size: 15px;
+        }
+      }
+    </style>
+    <script>
+      function Fetch() {
+        let tweetUrl = $("#tweet-url").val();
+        console.log(tweetUrl);
+        document.getElementsByTagName("p")[0].innerText = "Analyzing...";
+        $.ajax({
+          url: "/api",
+          type: "POST",
+          data: tweetUrl,
+          success: function (response) {
+            console.log(response);
+            document.getElementsByTagName("p")[0].innerText = response.message;
+          },
+          error: function (error) {
+            document.getElementsByTagName("p")[0].innerText =
+              "Error: Unable to analyze tweet.";
+          },
+        });
+      }
+    </script>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Tweet Sentiment Analysis</h1>
+      <label for="tweet-url">Tweet URL:</label>
+      <input
+        type="text"
+        id="tweet-url"
+        placeholder="https://twitter.com/username/status/1234567890"
+      />
+      <button onclick="Fetch()">Analyze</button>
+      <p></p>
+    </div>
+  </body>
 </html>
-
