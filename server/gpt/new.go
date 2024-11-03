@@ -35,8 +35,17 @@ func New(data string) string {
 		Model: "gpt-4",
 		Messages: []message{
 			{
-				Role:    "system",
-				Content: "Analyze the text to determine if it has a positive, neutral, or negative tone. Then, provide a brief summary that captures the main message and mood in one simple, cohesive paragraph, indicating whether the tone is upbeat, neutral, or downbeat based on the sentiment in a seperate line.",
+				Role: "system",
+				Content: `Analyze the text to determine if it has a positive, neutral, or negative tone. Then, provide a brief summary that captures the main message and mood in one simple, cohesive paragraph. Display the tone as upbeat, neutral, or downbeat based on the sentiment in a separate line.
+
+Here is a format the output as follows:
+<div>
+    <p>Provide the summary here in one cohesive sentence, capturing the overall sentiment and main idea of the text.</p>
+    <br>
+    Tone: <span>show that result weither positive or negitive or neutral and use green, red or grey colors for them, but only span this span tag.</span>
+</div>
+
+Output the <div> structure in HTML with the <p> tag for summary, and <span> indicating the tone. Do not use markdown or any other formatting; use only HTML tags that can be used inside of a div tag and don't just give the same svg, but give a different one based on the sentiment analysis.`,
 			},
 			{
 				Role:    "user",

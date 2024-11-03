@@ -1,183 +1,177 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Tweet Analysis</title>
-    <script
-      src="https://code.jquery.com/jquery-3.7.1.min.js"
-      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-      crossorigin="anonymous"
-    ></script>
-    <style>
-      /* Reset */
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
 
-      /* Body styling */
-      body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #1da1f2 0%, #004080 100%);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        overflow: hidden;
-        color: #fff;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <title>Tweet Analysis</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-      /* Container styling */
+    /* Body styling */
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1da1f2 0%, #004080 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      color: #fff;
+    }
+
+    /* Container styling */
+    .container {
+      width: 90%;
+      max-width: 400px;
+      padding: 40px;
+      background-color: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+      border-radius: 12px;
+      transition: transform 0.3s ease;
+      text-align: center;
+    }
+
+    /* Container hover effect */
+    .container:hover {
+      transform: translateY(-5px);
+    }
+
+    /* Header styling */
+    h1 {
+      color: #1da1f2;
+      font-size: 26px;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    /* Label styling */
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: #333;
+      text-align: left;
+    }
+
+    /* Input field styling */
+    input[type="text"] {
+      width: 100%;
+      padding: 14px 18px;
+      font-size: 15px;
+      border: 1px solid #ccd6dd;
+      border-radius: 6px;
+      transition:
+        border-color 0.3s,
+        box-shadow 0.3s;
+      outline: none;
+      margin-bottom: 18px;
+    }
+
+    /* Input focus effect */
+    input[type="text"]:focus {
+      border-color: #1da1f2;
+      box-shadow: 0 0 8px rgba(29, 161, 242, 0.2);
+    }
+
+    /* Button styling */
+    button {
+      width: 100%;
+      padding: 14px;
+      font-size: 17px;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(135deg, #1da1f2, #1991da);
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition:
+        background-color 0.3s ease,
+        transform 0.2s;
+    }
+
+    /* Button hover effect */
+    button:hover {
+      background: linear-gradient(135deg, #1991da, #1da1f2);
+      transform: translateY(-1px);
+    }
+
+    /* Button active effect */
+    button:active {
+      transform: translateY(2px);
+    }
+
+    /* Paragraph styling */
+    #result {
+      font-size: 16px;
+      color: #444;
+      line-height: 1.6;
+      margin-top: 25px;
+      text-align: justify;
+      word-wrap: break-word;
+      min-height: 30px;
+    }
+
+    /* Responsive styling */
+    @media (max-width: 600px) {
       .container {
-        width: 90%;
-        max-width: 400px;
-        padding: 40px;
-        background-color: rgba(255, 255, 255, 0.9);
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-        border-radius: 12px;
-        transition: transform 0.3s ease;
-        text-align: center;
+        padding: 30px 20px;
       }
 
-      /* Container hover effect */
-      .container:hover {
-        transform: translateY(-5px);
-      }
-
-      /* Header styling */
       h1 {
-        color: #1da1f2;
-        font-size: 26px;
-        margin-bottom: 20px;
-        font-weight: 600;
+        font-size: 22px;
       }
 
-      /* Label styling */
-      label {
-        display: block;
-        margin-bottom: 8px;
-        font-size: 14px;
-        color: #333;
-        text-align: left;
-      }
-
-      /* Input field styling */
       input[type="text"] {
-        width: 100%;
-        padding: 14px 18px;
-        font-size: 15px;
-        border: 1px solid #ccd6dd;
-        border-radius: 6px;
-        transition:
-          border-color 0.3s,
-          box-shadow 0.3s;
-        outline: none;
-        margin-bottom: 18px;
+        font-size: 14px;
+        padding: 12px 15px;
       }
 
-      /* Input focus effect */
-      input[type="text"]:focus {
-        border-color: #1da1f2;
-        box-shadow: 0 0 8px rgba(29, 161, 242, 0.2);
-      }
-
-      /* Button styling */
       button {
-        width: 100%;
-        padding: 14px;
-        font-size: 17px;
-        font-weight: 600;
-        color: #fff;
-        background: linear-gradient(135deg, #1da1f2, #1991da);
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        transition:
-          background-color 0.3s ease,
-          transform 0.2s;
-      }
-
-      /* Button hover effect */
-      button:hover {
-        background: linear-gradient(135deg, #1991da, #1da1f2);
-        transform: translateY(-1px);
-      }
-
-      /* Button active effect */
-      button:active {
-        transform: translateY(2px);
-      }
-
-      /* Paragraph styling */
-      p {
         font-size: 16px;
-        color: #444;
-        line-height: 1.6;
-        margin-top: 25px;
-        text-align: justify;
-        word-wrap: break-word;
-        min-height: 30px;
+        padding: 12px;
       }
 
-      /* Responsive styling */
-      @media (max-width: 600px) {
-        .container {
-          padding: 30px 20px;
-        }
-
-        h1 {
-          font-size: 22px;
-        }
-
-        input[type="text"] {
-          font-size: 14px;
-          padding: 12px 15px;
-        }
-
-        button {
-          font-size: 16px;
-          padding: 12px;
-        }
-
-        p {
-          font-size: 15px;
-        }
+      p {
+        font-size: 15px;
       }
-    </style>
-    <script>
-      function Fetch() {
-        let tweetUrl = $("#tweet-url").val();
-        console.log(tweetUrl);
-        document.getElementsByTagName("p")[0].innerText = "Analyzing...";
-        $.ajax({
-          url: "/api",
-          type: "POST",
-          data: tweetUrl,
-          success: function (response) {
-            console.log(response);
-            document.getElementsByTagName("p")[0].innerText = response.message;
-          },
-          error: function (error) {
-            document.getElementsByTagName("p")[0].innerText =
-              "Error: Unable to analyze tweet.";
-          },
-        });
-      }
-    </script>
-  </head>
+    }
+  </style>
+  <script>
+    function Fetch() {
+      let tweetUrl = $("#tweet-url").val();
+      console.log(tweetUrl);
+      $("#result").text("Analyzing...");
+      $.ajax({
+        url: "/api",
+        type: "POST",
+        data: tweetUrl,
+        success: function (response) {
+          console.log(response);
+          $("#result").html(response.message);
+        },
+        error: function (error) {
+          $("#result").text("Error: Unable to analyze tweet.");
+        },
+      });
+    }
+  </script>
+</head>
 
-  <body>
-    <div class="container">
-      <h1>Tweet Sentiment Analysis</h1>
-      <label for="tweet-url">Tweet URL:</label>
-      <input
-        type="text"
-        id="tweet-url"
-        placeholder="https://twitter.com/username/status/1234567890"
-      />
-      <button onclick="Fetch()">Analyze</button>
-      <p></p>
-    </div>
-  </body>
+<body>
+  <div class="container">
+    <h1>Tweet Sentiment Analysis</h1>
+    <label for="tweet-url">Tweet URL:</label>
+    <input type="text" id="tweet-url" placeholder="https://twitter.com/username/status/1234567890" />
+    <button onclick="Fetch()">Analyze</button>
+    <div id="result"></div>
+  </div>
+</body>
+
 </html>
