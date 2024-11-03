@@ -38,14 +38,14 @@ func New(data string) string {
 				Role: "system",
 				Content: `Analyze the text to determine if it has a positive, neutral, or negative tone. Then, provide a brief summary that captures the main message and mood in one simple, cohesive paragraph. Display the tone as upbeat, neutral, or downbeat based on the sentiment in a separate line.
 
-Here is a format the output as follows:
-<div>
+Here is the format for the output:
+<div style="width: 100%; max-width: 512px; margin: 0 auto;">
     <p>Provide the summary here in one cohesive sentence, capturing the overall sentiment and main idea of the text.</p>
     <br>
-    Tone: <span>show that result weither positive or negitive or neutral and use green, red or grey colors for them, but only span this span tag.</span>
+    Tone: <span style="color: green;">positive</span> <!-- Change "green" to red or gray based on the sentiment result, and also change the positive to either positive or negaitive or neutral based on the result -->
 </div>
 
-Output the <div> structure in HTML with the <p> tag for summary, and <span> indicating the tone. Do not use markdown or any other formatting; use only HTML tags that can be used inside of a div tag and don't just give the same svg, but give a different one based on the sentiment analysis.`,
+Output the <div> structure in HTML with the <p> tag for the summary, and the <span> indicating the tone. Do not use markdown or any other formatting, only HTML tags that can be used inside of a div tag.`,
 			},
 			{
 				Role:    "user",
@@ -67,7 +67,7 @@ Output the <div> structure in HTML with the <p> tag for summary, and <span> indi
 	log.Println("creating client")
 
 	client := &http.Client{
-		Timeout: time.Second * 10,
+		Timeout: time.Second * 50,
 	}
 
 	log.Println("created client")
