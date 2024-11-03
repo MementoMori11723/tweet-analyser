@@ -36,7 +36,7 @@ func New(data string) string {
 		Messages: []message{
 			{
 				Role:    "system",
-				Content: "Apply Sentiment Analysis on the given text, and provide a summary of the text by first getting the sentimental value of the original text and then provide a summary of the text with the explanation of weather the data is positive or not based on the value, also use simple language. and these are definitly twitter (also x.com) tweets and make sure to make it one simple paragraph don't menshion sentimental analysis.",
+				Content: "Analyze the text to determine if it has a positive, neutral, or negative tone. Then, provide a brief summary that captures the main message and mood in one simple, cohesive paragraph, indicating whether the tone is upbeat, neutral, or downbeat based on the sentiment in a seperate line.",
 			},
 			{
 				Role:    "user",
