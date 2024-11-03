@@ -35,36 +35,36 @@ func isChromeInstalled() bool {
 	return true
 }
 
+
 func installChrome() {
 	switch runtime.GOOS {
-	case "windows":
-		fmt.Println("Downloading Chrome for Windows...")
-		err := exec.Command("powershell", "Start-Process", "powershell", "-ArgumentList", "'-Command", "Invoke-WebRequest", "https://dl.google.com/chrome/install/latest/chrome_installer.exe", "-OutFile", "chrome_installer.exe; Start-Process", "chrome_installer.exe", "-Wait'").Run()
-		if err != nil {
-			log.Fatal("Failed to install Chrome on Windows:", err)
-		}
-	case "darwin":
-		fmt.Println("Installing Chrome on macOS...")
-		err := exec.Command("brew", "install", "--cask", "google-chrome").Run()
-		if err != nil {
-			log.Fatal("Failed to install Chrome on macOS:", err)
-		}
 	case "linux":
-		fmt.Println("Installing Chrome on Linux...")
-		err := exec.Command("sudo", "apt-get", "update").Run()
+		fmt.Println("Installing Chrome on Linux without sudo...")
+		// Download Chrome directly
+		err := exec.Command("wget", "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb", "-O", "google-chrome.deb").Run()
 		if err != nil {
-			log.Fatal("Failed to update package list:", err)
+			log.Fatal("Failed to download Chrome:", err)
 		}
-		err = exec.Command("sudo", "apt-get", "install", "-y", "google-chrome-stable").Run()
-		if err != nil {
-			log.Fatal("Failed to install Chrome on Linux:", err)
-		}
-	default:
-		fmt.Println("Unsupported OS. Please install Chrome manually.")
-	}
 
-	fmt.Println("Chrome installation complete.")
+		// Install Chrome using dpkg
+		err = exec.Command("dpkg", "-x", "google-chrome.deb", ".").Run()
+		if err != nil {
+			log.Fatal("Failed to extract Chrome package:", err)
+		}
+
+		// Move Chrome binary to an accessible path
+		err = exec.Command("mv", "./opt/google/chrome/chrome", "/usr/bin/google-chrome").Run()
+		if err != nil {
+			log.Fatal("Failed to move Chrome to /usr/bin:", err)
+		}
+
+		fmt.Println("Chrome installation complete.")
+
+	default:
+		fmt.Println("Unsupported OS or requires manual installation.")
+	}
 }
+
 
 // New creates a new scraping context and extracts data from the given URL
 func New(url string) string {
