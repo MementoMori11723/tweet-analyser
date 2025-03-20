@@ -109,6 +109,8 @@ Output the <div> structure in HTML with the <p> tag for the summary, and the <sp
 		log.Fatal(err)
 	}
 
+  log.Println(responce)
+
 	log.Println("unmarshalled response")
 	log.Println("returning response")
 	return responce.Choices[0].Message.Content
