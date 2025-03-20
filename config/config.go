@@ -18,8 +18,9 @@ func init() {
 	}
 	PORT = os.Getenv("PORT")
 	if PORT == "" {
-		PORT = "8080"
+    PORT = "8080"
 	}
+  PORT = ":" + PORT
 }
 
 func GetPort() string {
