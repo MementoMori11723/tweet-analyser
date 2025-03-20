@@ -99,6 +99,8 @@ Output the <div> structure in HTML with the <p> tag for the summary, and the <sp
 		log.Fatal(err)
 	}
 
+  log.Println(body)
+
 	log.Println("read response")
 	log.Println("unmarshalling response")
 
