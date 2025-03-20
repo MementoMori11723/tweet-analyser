@@ -8,7 +8,7 @@ import (
 var (
 	PORT        string
 	GPT_API_KEY string
-	GPT_URL     = "https://api.openai.com/v1/chat/completions"
+	GPT_URL     = "https://api.deepseek.com/chat/completions"
 )
 
 func init() {
