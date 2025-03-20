@@ -21,6 +21,9 @@ type Request struct {
 }
 
 type Responce struct {
+	Error struct {
+		Message string `json:"message"`
+	} `json:"error"`
 	Choices []struct {
 		Message struct {
 			Content string `json:"content"`
@@ -99,8 +102,6 @@ Output the <div> structure in HTML with the <p> tag for the summary, and the <sp
 		log.Fatal(err)
 	}
 
-  log.Println(body)
-
 	log.Println("read response")
 	log.Println("unmarshalling response")
 
@@ -111,9 +112,13 @@ Output the <div> structure in HTML with the <p> tag for the summary, and the <sp
 		log.Fatal(err)
 	}
 
-  log.Println(responce)
+	log.Println(responce)
 
 	log.Println("unmarshalled response")
 	log.Println("returning response")
+
+	if responce.Error.Message != "" {
+		return responce.Error.Message
+	}
 	return responce.Choices[0].Message.Content
 }
