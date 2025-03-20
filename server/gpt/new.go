@@ -18,6 +18,7 @@ type message struct {
 type Request struct {
 	Model    string    `json:"model"`
 	Messages []message `json:"messages"`
+  Stream bool `json:"stream"`
 }
 
 type Responce struct {
@@ -35,7 +36,7 @@ func New(data string) string {
 	log.Println("GPT New called")
 	api, url := config.GetGptData()
 	request := Request{
-		Model: "gpt-4",
+		Model: "deepseek-chat",
 		Messages: []message{
 			{
 				Role: "system",
@@ -55,6 +56,7 @@ Output the <div> structure in HTML with the <p> tag for the summary, and the <sp
 				Content: data,
 			},
 		},
+    Stream: false,
 	}
 
 	log.Println("Request created")
