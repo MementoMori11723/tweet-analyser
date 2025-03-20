@@ -3,7 +3,7 @@ services:
     build:
       context: ../
       dockerfile: config/Dockerfile
-    container_name: bank-app
+    container_name: analyser
     expose:
       - "8000"
     env_file:
