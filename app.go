@@ -1,20 +1,22 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"net/http"
-	"tweet-analyser/client"
+	"os"
 	"tweet-analyser/config"
 	"tweet-analyser/server"
 )
 
 func main() {
-  client := client.New()
-  server := server.New()
-  PORT := config.GetPort()
-
-  http.Handle("/", client)
-  http.Handle("/api", server)
-  fmt.Println("Server is running on http://localhost:"+PORT)
-  http.ListenAndServe(":"+PORT, nil)
+	PORT := config.GetPort()
+	server := http.Server{
+		Addr:    PORT,
+		Handler: server.New(),
+	}
+	log.Println("Server is running on http://localhost" + server.Addr)
+	if err := server.ListenAndServe(); err != nil {
+		log.Println(err.Error())
+		os.Exit(1)
+	}
 }

@@ -1,0 +1,11 @@
+---
+- hosts: vps
+  tasks:
+    - name: Pull the latest changes and run the makefile
+      shell: |
+        if [ ! -d $HOME/tweet-analyser ]; then
+          git clone https://github.com/MementoMori11723/tweet-analyser.git $HOME/tweet-analyser
+        fi
+        cd $HOME/tweet-analyser && git pull origin master && make stop && make
+      args:
+        executable: /bin/bash

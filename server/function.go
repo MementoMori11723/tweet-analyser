@@ -1,13 +1,31 @@
 package server
 
 import (
+	"embed"
 	"encoding/json"
+	"html/template"
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"tweet-analyser/server/gpt"
 	"tweet-analyser/server/scraper"
 )
+
+var (
+  //go:embed pages/*
+  files embed.FS
+  indexTmpl *template.Template
+)
+
+func init() {
+  var err error
+  indexTmpl, err = template.ParseFS(files, "pages/index.html")
+  if err != nil {
+    log.Println(err.Error())
+    os.Exit(1)
+  }
+}
 
 func api(w http.ResponseWriter, r *http.Request) {
   log.Println("API called")
@@ -33,4 +51,10 @@ func api(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+}
+
+func home(w http.ResponseWriter, _ *http.Request) {
+  if err := indexTmpl.Execute(w, nil); err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+  } 
 }
